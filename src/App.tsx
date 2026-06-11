@@ -1,6 +1,6 @@
 ﻿import { useEffect, useState } from 'react';
 import './index.css';
-import { coin, notcoin } from './images'; // 确保路径里有这两张图
+import { notcoin } from './images';
 
 const App = () => {
     // 核心状态：余额、点击计数（0-10）、弹窗控制
@@ -41,7 +41,7 @@ const App = () => {
     // 广告播放逻辑
     const handleWatchAd = () => {
         // 这里的 blockId 换成你 Adsgram 后台生成的那个
-        const AdController = (window as any).Adsgram.init({ blockId: "32911" });
+        const AdController = (window as any).Adsgram.init({ blockId: "34833" });
 
         AdController.show().then(() => {
             // 广告看完：体力归零，关闭弹窗
