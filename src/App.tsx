@@ -4,8 +4,10 @@ import { notcoin } from './images';
 
 const App = () => {
     const [balance, setBalance] = useState(0);
-    const [showAdModal, setShowAdModal] = useState(false);
     const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>([]);
+
+    // ⭐ 新增：稳定度（100 → 0）
+    const [stability, setStability] = useState(100);
 
     useEffect(() => {
         const tg = (window as any).Telegram?.WebApp;
@@ -21,35 +23,12 @@ const App = () => {
         const y = e.clientY - rect.top;
 
         // +50 VTX
-        setBalance((prev) => parseFloat((prev + 50).toFixed(0)));
+        setBalance((prev) => prev + 50);
 
-        setClicks((prev) => [
-            ...prev,
-            { id: Date.now(), x, y },
-        ]);
-    };
+        // ⭐ 每次点击减少10%稳定度
+        setStability((prev) => Math.max(prev - 10, 0));
 
-    const handleWatchAd = () => {
-        const Adsgram = (window as any).Adsgram;
-
-        if (!Adsgram) {
-            alert('Adsgram 未加载');
-            return;
-        }
-
-        const AdController = Adsgram.init({
-            blockId: "34833",
-        });
-
-        AdController.show()
-            .then(() => {
-                setShowAdModal(false);
-
-                (window as any).Telegram?.WebApp?.HapticFeedback?.notificationOccurred?.('success');
-            })
-            .catch(() => {
-                alert("Watch a short fragment to recalibrate your node energy.");
-            });
+        setClicks((prev) => [...prev, { id: Date.now(), x, y }]);
     };
 
     const handleAnimationEnd = (id: number) => {
@@ -59,13 +38,13 @@ const App = () => {
     return (
         <div className="bg-gradient-main min-h-screen px-4 flex flex-col items-center text-white font-medium select-none">
 
-            {/* 顶部信息 */}
+            {/* 顶部 */}
             <div className="w-full pt-12 flex flex-col items-center">
-                <p className="text-gray-400 text-lg mb-2">
+                <p className="text-gray-300 text-lg mb-2">
                     Airdrop Threshold: 100,000 VTX
                 </p>
 
-                <div className="text-6xl font-black flex items-center text-[#fad258]">
+                <div className="text-6xl font-black flex items-center text-[#fad258] drop-shadow-lg">
                     <span className="mr-2">⚡</span>
                     <span>{balance} VTX</span>
                 </div>
@@ -75,7 +54,7 @@ const App = () => {
                 </p>
             </div>
 
-            {/* 点击区域 */}
+            {/* 点击区 */}
             <div className="flex-grow flex items-center justify-center relative">
                 <div
                     className="relative active:scale-95 transition-transform cursor-pointer"
@@ -106,52 +85,23 @@ const App = () => {
                 </div>
             </div>
 
-            {/* 状态条（替代体力系统） */}
+            {/* ⭐ Node Stability（现在会变化） */}
             <div className="w-full pb-12 px-8">
                 <div className="flex justify-between mb-2 text-sm">
                     <span>Node Stability</span>
-                    <span className="text-[#fad258]">100%</span>
+                    <span className="text-[#fad258] font-semibold">
+                        {stability}%
+                    </span>
                 </div>
 
                 <div className="w-full bg-white/10 h-3 rounded-full overflow-hidden">
                     <div
                         className="bg-[#fad258] h-full transition-all duration-300"
-                        style={{ width: `100%` }}
+                        style={{ width: `${stability}%` }}
                     />
                 </div>
             </div>
 
-            {/* 主按钮 */}
-            <button
-                onClick={() => setShowAdModal(true)}
-                className="w-full mb-8 bg-[#fad258] text-black font-extrabold py-4 rounded-2xl text-xl active:scale-95 transition-transform"
-            >
-                Boost Mining Speed (Node Optimization)
-            </button>
-
-            {/* 弹窗 */}
-            {showAdModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 px-6">
-                    <div className="bg-[#1f1f1f] border-2 border-[#fad258] p-8 rounded-3xl text-center w-full max-w-sm">
-                        <div className="text-6xl mb-4">🧠</div>
-
-                        <h2 className="text-2xl font-bold mb-2">
-                            Node Recalibration Required
-                        </h2>
-
-                        <p className="text-gray-400 mb-8 text-sm">
-                            Watch a short fragment to recalibrate your node energy.
-                        </p>
-
-                        <button
-                            onClick={handleWatchAd}
-                            className="w-full bg-[#fad258] text-black font-black py-5 rounded-2xl text-xl animate-bounce"
-                        >
-                            ▶ Start Calibration
-                        </button>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
