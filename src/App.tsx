@@ -16,10 +16,7 @@ const App = () => {
         }
     }, []);
 
-    // ⭐ 点击挖矿
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-
-        // ❗没能量直接弹窗 + 禁止点击
         if (stability <= 0) {
             setShowAdModal(true);
             return;
@@ -29,10 +26,7 @@ const App = () => {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        // +50 VTX
         setBalance((prev) => prev + 50);
-
-        // 扣能量
         setStability((prev) => Math.max(prev - 10, 0));
 
         setClicks((prev) => [...prev, { id: Date.now(), x, y }]);
@@ -42,7 +36,6 @@ const App = () => {
         setClicks((prev) => prev.filter((c) => c.id !== id));
     };
 
-    // ⭐ 恢复能量（看广告后）
     const handleRecover = () => {
         setStability(100);
         setShowAdModal(false);
@@ -51,7 +44,7 @@ const App = () => {
     return (
         <div className="bg-gradient-main min-h-screen px-4 flex flex-col items-center text-white font-medium select-none">
 
-            {/* 顶部 */}
+            {/* Header */}
             <div className="w-full pt-12 flex flex-col items-center">
                 <p className="text-gray-300 text-lg mb-2">
                     Airdrop Threshold: 100,000 VTX
@@ -67,7 +60,7 @@ const App = () => {
                 </p>
             </div>
 
-            {/* 点击区 */}
+            {/* Mining Area */}
             <div className="flex-grow flex items-center justify-center relative">
                 <div
                     className="relative active:scale-95 transition-transform cursor-pointer"
@@ -98,7 +91,7 @@ const App = () => {
                 </div>
             </div>
 
-            {/* ⭐ Node Stability */}
+            {/* Stability */}
             <div className="w-full pb-12 px-8">
                 <div className="flex justify-between mb-2 text-sm">
                     <span>Node Stability</span>
@@ -115,15 +108,7 @@ const App = () => {
                 </div>
             </div>
 
-            {/* ⭐ 恢复按钮 */}
-            <button
-                onClick={handleRecover}
-                className="w-full mb-8 bg-[#fad258] text-black font-extrabold py-4 rounded-2xl text-xl active:scale-95 transition-transform"
-            >
-                Boost Mining Speed (Node Optimization)
-            </button>
-
-            {/* ⭐ 弹窗 */}
+            {/* Modal */}
             {showAdModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 px-6">
                     <div className="bg-[#1f1f1f] border-2 border-[#fad258] p-8 rounded-3xl text-center w-full max-w-sm">
@@ -136,15 +121,13 @@ const App = () => {
 
                         <p className="text-gray-400 mb-8 text-sm">
                             Watch a short fragment to recalibrate your node energy.
-                            <br />
-                            (观看短片段以重新校准你的节点能量)
                         </p>
 
                         <button
                             onClick={handleRecover}
                             className="w-full bg-[#fad258] text-black font-black py-5 rounded-2xl text-xl animate-bounce"
                         >
-                            ▶ Start Calibration
+                            Start Calibration
                         </button>
                     </div>
                 </div>
