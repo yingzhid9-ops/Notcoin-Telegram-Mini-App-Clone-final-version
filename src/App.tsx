@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './index.css';
-import { coin, notcoin } from './images';
+import { notcoin } from './images';
 
 const App = () => {
     const [balance, setBalance] = useState(0);
@@ -29,10 +29,7 @@ const App = () => {
         setBalance((prev) => parseFloat((prev + 0.05).toFixed(2)));
         setTapCount((prev) => prev + 1);
 
-        setClicks((prev) => [
-            ...prev,
-            { id: Date.now(), x, y },
-        ]);
+        setClicks((prev) => [...prev, { id: Date.now(), x, y }]);
     };
 
     const handleWatchAd = () => {
@@ -66,12 +63,12 @@ const App = () => {
     return (
         <div className="bg-gradient-main min-h-screen px-4 flex flex-col items-center text-white font-medium select-none">
 
-            {/* 顶部余额 + coin（这里解决你B方案核心点） */}
+            {/* 余额 */}
             <div className="w-full pt-12 flex flex-col items-center">
                 <p className="text-gray-400 text-lg mb-2">当前待提取余额 (USD)</p>
 
                 <div className="text-6xl font-black flex items-center text-[#fad258]">
-                    <img src={coin} width={42} className="mr-2" alt="coin" />
+                    <span className="mr-2">💰</span>
                     <span>${balance.toFixed(2)}</span>
                 </div>
 
@@ -80,7 +77,7 @@ const App = () => {
                 </p>
             </div>
 
-            {/* 点击区域 */}
+            {/* 点击区 */}
             <div className="flex-grow flex items-center justify-center relative">
                 <div
                     className="relative active:scale-95 transition-transform cursor-pointer"
@@ -111,12 +108,12 @@ const App = () => {
                 </div>
             </div>
 
-            {/* 体力条 */}
+            {/* 体力 */}
             <div className="w-full pb-12 px-8">
                 <div className="flex justify-between mb-2 text-sm">
                     <span>挖矿体力值</span>
                     <span className={tapCount >= 10 ? "text-red-500 animate-pulse" : ""}>
-                        {10 - tapCount} / 10 次点击
+                        {10 - tapCount} / 10
                     </span>
                 </div>
 
@@ -128,14 +125,14 @@ const App = () => {
                 </div>
             </div>
 
-            {/* 提现按钮 */}
+            {/* 提现 */}
             <button
                 onClick={() =>
-                    alert(`余额不足 $100.00，还差 $${(100 - balance).toFixed(2)}`)
+                    alert(`余额不足 $100，还差 $${(100 - balance).toFixed(2)}`)
                 }
-                className="w-full mb-8 bg-[#fad258] text-black font-extrabold py-4 rounded-2xl text-xl shadow-lg active:scale-95 transition-transform"
+                className="w-full mb-8 bg-[#fad258] text-black font-extrabold py-4 rounded-2xl text-xl active:scale-95 transition-transform"
             >
-                立即提现 (Withdraw)
+                立即提现
             </button>
 
             {/* 广告弹窗 */}
@@ -145,14 +142,14 @@ const App = () => {
                         <div className="text-6xl mb-4">🪫</div>
                         <h2 className="text-2xl font-bold mb-2">体力已耗尽！</h2>
                         <p className="text-gray-400 mb-8 text-sm">
-                            观看广告即可恢复体力
+                            观看广告恢复体力
                         </p>
 
                         <button
                             onClick={handleWatchAd}
                             className="w-full bg-[#fad258] text-black font-black py-5 rounded-2xl text-xl animate-bounce"
                         >
-                            📺 观看广告恢复
+                            📺 观看广告
                         </button>
                     </div>
                 </div>
