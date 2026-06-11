@@ -4,7 +4,6 @@ import { notcoin } from './images';
 
 const App = () => {
     const [balance, setBalance] = useState(0);
-    const [tapCount, setTapCount] = useState(0);
     const [showAdModal, setShowAdModal] = useState(false);
     const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>([]);
 
@@ -21,11 +20,13 @@ const App = () => {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        // 每次点击 +50 VTX
+        // +50 VTX
         setBalance((prev) => parseFloat((prev + 50).toFixed(0)));
 
-        // 点击特效
-        setClicks((prev) => [...prev, { id: Date.now(), x, y }]);
+        setClicks((prev) => [
+            ...prev,
+            { id: Date.now(), x, y },
+        ]);
     };
 
     const handleWatchAd = () => {
@@ -74,7 +75,7 @@ const App = () => {
                 </p>
             </div>
 
-            {/* 点击挖矿区 */}
+            {/* 点击区域 */}
             <div className="flex-grow flex items-center justify-center relative">
                 <div
                     className="relative active:scale-95 transition-transform cursor-pointer"
@@ -105,13 +106,11 @@ const App = () => {
                 </div>
             </div>
 
-            {/* 节点状态条 */}
+            {/* 状态条（替代体力系统） */}
             <div className="w-full pb-12 px-8">
                 <div className="flex justify-between mb-2 text-sm">
-                    <span>Node Energy</span>
-                    <span className="text-[#fad258]">
-                        Stable
-                    </span>
+                    <span>Node Stability</span>
+                    <span className="text-[#fad258]">100%</span>
                 </div>
 
                 <div className="w-full bg-white/10 h-3 rounded-full overflow-hidden">
